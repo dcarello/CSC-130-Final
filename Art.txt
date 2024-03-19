@@ -1,3 +1,7 @@
 Art/f.png*f0
 Art/BikerSprite.png*Biker1
 Art/BikerSpriteBig.png*Biker2
+Art/Walking0.png*Walking0
+Art/Walking1.png*Walking1
+Art/Walking2.png*Walking2
+Art/Walking3.png*Walking3
