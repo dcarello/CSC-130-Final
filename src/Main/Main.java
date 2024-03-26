@@ -2,8 +2,6 @@ package Main;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import Data.Vector2D;
 import Data.spriteInfo;
