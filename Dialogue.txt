@@ -1,0 +1,5 @@
+string1*Billy: 'I'm going to go hop on my PC to play some videogames'
+string2*Billy: 'My favorite game right now is Valorant'
+string3*Billy: 'Who do you main in Valorant'
+string4*Billy: 'What else do you do for fun other than play Valorant'
+string5*Billy: 'I also enjoy playing pool'
