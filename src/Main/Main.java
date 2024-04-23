@@ -3,7 +3,7 @@ package Main;
 import java.awt.Color;
 //import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.StringTokenizer;
+//import java.util.StringTokenizer;
 
 //import Data.Vector2D;
 //import Data.spriteInfo;
@@ -15,7 +15,7 @@ public class Main{
 	// Fields (Static) below...
 	public static Color c = new Color(113,38,235);
 
-	public static stopWatchX timer = new stopWatchX(4000);
+	public static stopWatchX timer = new stopWatchX(200);
 
 	
 	public static EZFileRead ezr = new EZFileRead("Dialogue.txt");
@@ -23,6 +23,8 @@ public class Main{
 	public static int dialogueIndex = 0;
 	public static String key = "string";
 	public static String currentLine = "";
+	public static String trigger = "";
+	public static boolean pressed = false;
 	
 	// End Static fields...
 	
@@ -34,13 +36,7 @@ public class Main{
 	/* This is your access to things BEFORE the game loop starts */
 	public static void start(){
 		// TODO: Code your starting conditions here...NOT DRAW CALLS HERE! (no addSprite or drawString)
-		for (int i = 0; i < ezr.getNumLines(); i++) {
-			String raw = ezr.getLine(i);
-			StringTokenizer st = new StringTokenizer(raw, "*");
-			String hashKey = st.nextToken(); // Acquires the Key from the raw String
-			String hashValue = st.nextToken(); // Acquires the Value from the raw String
-			dialogue.put(hashKey, hashValue);
-		}
+
 		
 	}
 	
@@ -49,17 +45,18 @@ public class Main{
 		// TODO: This is where you can code! (Starting code below is just to show you how it works)
 		ctrl.drawString(1070, 650, "Daniel Carello", c); // Test drawing text on screen where you want (Remove later! Test only!)
 		
+		
+		
 		if (timer.isTimeUp()) {
-			dialogueIndex++;
-			if (dialogueIndex == ezr.getNumLines() + 1) {
-				dialogueIndex = 1;
+			
+			if (!pressed) {
+				trigger = "";
 			}
-			key = "string";
-			key = key + dialogueIndex;
-			currentLine = dialogue.get(key);
+			pressed = false;
 			timer.resetWatch();
 		}
-		ctrl.drawString(100, 250, currentLine, c);
+		ctrl.drawString(100, 250, trigger, c);
+//		ctrl.drawString(100, 250, currentLine, c);
 	}
 	
 	// Additional Static methods below...(if needed)
