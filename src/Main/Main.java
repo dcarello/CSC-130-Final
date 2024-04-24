@@ -158,26 +158,6 @@ public class Main{
 			LeftAnimations.add("WalkingLeft" + i);
 			RightAnimations.add("WalkingRight" + i);
 		}
-		
-//		ForwardAnimations.add("WalkingForward0");
-//		ForwardAnimations.add("WalkingForward1");
-//		ForwardAnimations.add("WalkingForward2");
-//		ForwardAnimations.add("WalkingForward3");
-//		
-//		AwayAnimations.add("WalkingAway0");
-//		AwayAnimations.add("WalkingAway1");
-//		AwayAnimations.add("WalkingAway2");
-//		AwayAnimations.add("WalkingAway3");
-//		
-//		LeftAnimations.add("WalkingLeft0");
-//		LeftAnimations.add("WalkingLeft1");
-//		LeftAnimations.add("WalkingLeft2");
-//		LeftAnimations.add("WalkingLeft3");
-//		
-//		RightAnimations.add("WalkingRight0");
-//		RightAnimations.add("WalkingRight1");
-//		RightAnimations.add("WalkingRight2");
-//		RightAnimations.add("WalkingRight3");
 	}
 
 }
