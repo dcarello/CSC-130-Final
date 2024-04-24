@@ -15,7 +15,7 @@ public class Main{
 	// Fields (Static) below...
 	public static Color c = new Color(113,38,235);
 
-	public static stopWatchX timer = new stopWatchX(70);
+	public static stopWatchX timer = new stopWatchX(500);
 	
 	public static spriteInfo mainSprite = new spriteInfo(new Vector2D(800, 400), "FacingForward");
 	public static ArrayList<spriteInfo> sprites = new ArrayList<>();
@@ -85,7 +85,7 @@ public class Main{
 		if (facingForward) {
 			if (pressed) {
 				// sets the new sprites coords 1 pixel forward
-				mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() + 1);
+				mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() + 8);
 				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  ForwardAnimations.get(walkingIndex));
 				if (walkingIndex == 3) {
 					walkingIndex = 0;
@@ -101,7 +101,7 @@ public class Main{
 		
 		if (facingAway) {
 			if (pressed) {
-				mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() - 1);
+				mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() - 8);
 				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  AwayAnimations.get(walkingIndex));
 				if (walkingIndex == 3) {
 					walkingIndex = 0;
@@ -117,7 +117,7 @@ public class Main{
 		
 		if (facingLeft) {
 			if (pressed) {
-				mainSprite.setCoords(mainSprite.getCoords().getX() - 1, mainSprite.getCoords().getY());
+				mainSprite.setCoords(mainSprite.getCoords().getX() - 8, mainSprite.getCoords().getY());
 				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  LeftAnimations.get(walkingIndex));
 				if (walkingIndex == 3) {
 					walkingIndex = 0;
@@ -132,7 +132,7 @@ public class Main{
 		
 		if (facingRight) {
 			if (pressed) {
-				mainSprite.setCoords(mainSprite.getCoords().getX() + 1, mainSprite.getCoords().getY());
+				mainSprite.setCoords(mainSprite.getCoords().getX() + 8, mainSprite.getCoords().getY());
 				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  RightAnimations.get(walkingIndex));
 				if (walkingIndex == 3) {
 					walkingIndex = 0;
@@ -152,25 +152,32 @@ public class Main{
 	// Additional Static methods below...(if needed)
 	public static void loadAnimations() {
 		
-		ForwardAnimations.add("WalkingForward0");
-		ForwardAnimations.add("WalkingForward1");
-		ForwardAnimations.add("WalkingForward2");
-		ForwardAnimations.add("WalkingForward3");
+		for (int i = 0; i < 4; i++) {
+			ForwardAnimations.add("WalkingForward" + i);
+			AwayAnimations.add("WalkingAway" + i);
+			LeftAnimations.add("WalkingLeft" + i);
+			RightAnimations.add("WalkingRight" + i);
+		}
 		
-		AwayAnimations.add("WalkingAway0");
-		AwayAnimations.add("WalkingAway1");
-		AwayAnimations.add("WalkingAway2");
-		AwayAnimations.add("WalkingAway3");
-		
-		LeftAnimations.add("WalkingLeft0");
-		LeftAnimations.add("WalkingLeft1");
-		LeftAnimations.add("WalkingLeft2");
-		LeftAnimations.add("WalkingLeft3");
-		
-		RightAnimations.add("WalkingRight0");
-		RightAnimations.add("WalkingRight1");
-		RightAnimations.add("WalkingRight2");
-		RightAnimations.add("WalkingRight3");
+//		ForwardAnimations.add("WalkingForward0");
+//		ForwardAnimations.add("WalkingForward1");
+//		ForwardAnimations.add("WalkingForward2");
+//		ForwardAnimations.add("WalkingForward3");
+//		
+//		AwayAnimations.add("WalkingAway0");
+//		AwayAnimations.add("WalkingAway1");
+//		AwayAnimations.add("WalkingAway2");
+//		AwayAnimations.add("WalkingAway3");
+//		
+//		LeftAnimations.add("WalkingLeft0");
+//		LeftAnimations.add("WalkingLeft1");
+//		LeftAnimations.add("WalkingLeft2");
+//		LeftAnimations.add("WalkingLeft3");
+//		
+//		RightAnimations.add("WalkingRight0");
+//		RightAnimations.add("WalkingRight1");
+//		RightAnimations.add("WalkingRight2");
+//		RightAnimations.add("WalkingRight3");
 	}
 
 }
