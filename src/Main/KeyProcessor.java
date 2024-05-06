@@ -71,7 +71,7 @@ public class KeyProcessor{
 			
 		case '$':
 			Main.trigger = "spacebar is triggered";
-			Main.pressed = true;
+			Main.interact = !Main.interact;
 			break;
 			
 		case '%':								// ESC key

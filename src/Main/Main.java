@@ -35,6 +35,16 @@ public class Main{
 	// Array for Bounding Boxes
 	public static ArrayList<BoundingBox> Boxes = new ArrayList<>();
 	
+	//Interaction Boxes and Variable
+	public static boolean interact = false;
+	public static BoundingBox deskInteract = new BoundingBox(1024, 1208, 242, 271);
+	public static BoundingBox leftBedInteract = new BoundingBox(345, 389, 435, 688);
+	public static BoundingBox topBedInteract = new BoundingBox(389, 555, 405, 435);
+	public static BoundingBox rightBedInteract = new BoundingBox(555, 599, 435, 688);
+	
+	//Array for Interaction Boxes
+	public static ArrayList<BoundingBox> InteractionBoxes = new ArrayList<>();
+	
 	// Walking Animation Arrays and variables
 	public static ArrayList<String> ForwardAnimations = new ArrayList<>();
 	public static ArrayList<String> AwayAnimations = new ArrayList<>();
@@ -50,12 +60,6 @@ public class Main{
 	public static boolean facingAway = false;
 	public static boolean facingLeft = false;
 	public static boolean facingRight = false;
-	
-//	public static EZFileRead ezr = new EZFileRead("Dialogue.txt");
-//	public static HashMap<String, String> dialogue = new HashMap<>();
-//	public static int dialogueIndex = 0;
-//	public static String key = "string";
-//	public static String currentLine = "";
 	
 
 	
@@ -81,6 +85,11 @@ public class Main{
 		Boxes.add(leftDeskLeg);
 		Boxes.add(rightDeskLeg);
 		Boxes.add(Desk);
+		
+		InteractionBoxes.add(deskInteract);
+		InteractionBoxes.add(leftBedInteract);
+		InteractionBoxes.add(topBedInteract);
+		InteractionBoxes.add(rightBedInteract);
 
 		
 	}
@@ -95,14 +104,6 @@ public class Main{
 
 		
 		if (timer.isTimeUp()) {
-//			dialogueIndex++;
-//			if (dialogueIndex == ezr.getNumLines() + 1) {
-//				dialogueIndex = 1;
-//			}
-//			key = "string";
-//			key = key + dialogueIndex;
-//			currentLine = dialogue.get(key);
-			
 			
 			if (!pressed) {
 				trigger = "";
@@ -111,133 +112,58 @@ public class Main{
 		}
 		
 		if (facingForward) {
-			if (pressed) {
-				// Sets New Bounding Box for mainSprite
-				mainSpriteBox.setWalls(mainSpriteBox.getX1(), mainSpriteBox.getX2(), mainSpriteBox.getY1() + pixelStep, mainSpriteBox.getY2() + pixelStep);
-				// sets the new sprites coords pixelStep forward
-				mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() + pixelStep);
+			if (interact && BoundingBox.isCollision(mainSpriteBox, topBedInteract)) {
+				BedInteract(ctrl);
 				
-				// If the new movement of the sprite has a collision it puts the coordinates back
-				if (SpriteCollision()) {
-					mainSpriteBox.setWalls(mainSpriteBox.getX1(), mainSpriteBox.getX2(), mainSpriteBox.getY1() - pixelStep, mainSpriteBox.getY2() - pixelStep);
-					mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() - pixelStep);
-				}
-				
-				// Prints sprite walking with the current animation frame
-				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  ForwardAnimations.get(walkingIndex));
-				
-				// Moves the walking frame animation up 1 unless its at 3, the max
-				if (walkingIndex == 3) {
-					walkingIndex = 0;
-				}else {
-					walkingIndex += 1;
-				}	
+			}
+			else if (pressed) {
+				moveForward(ctrl);
 			}
 			// if the button is not pressed it prints the character standing facing the appropriate direction
 			else {
-				walkingIndex = 0;
-				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  mainSprite.getTag());
+				standingStill(ctrl);
 			}
 			
 		}	
 		
 		if (facingAway) {
-			if (pressed) {
-				// sets the new sprites coords pixelStep backward
-				mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() - pixelStep);
-				// Sets New Bounding Box for mainSprite
-				mainSpriteBox.setWalls(mainSpriteBox.getX1(), mainSpriteBox.getX2(), mainSpriteBox.getY1() - pixelStep, mainSpriteBox.getY2() - pixelStep);
-				
-				// If the new movement of the sprite has a collision it puts the coordinates back
-				if (SpriteCollision()) {
-					mainSpriteBox.setWalls(mainSpriteBox.getX1(), mainSpriteBox.getX2(), mainSpriteBox.getY1() + pixelStep, mainSpriteBox.getY2() + pixelStep);
-					mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() + pixelStep);
-				}
-				
-				// Prints sprite walking with the current animation frame
-				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  AwayAnimations.get(walkingIndex));
-				
-				// Moves the walking frame animation up 1 unless its at 3, the max
-				if (walkingIndex == 3) {
-					walkingIndex = 0;
-				}else {
-					walkingIndex += 1;
-				}
-				
+			if (interact && BoundingBox.isCollision(mainSpriteBox, deskInteract)) {
+				DeskInteract(ctrl);
+			} 
+			else if (pressed) {
+				moveAway(ctrl);
 			}
 			// if the button is not pressed it prints the character standing facing the appropriate direction
 			else {
-				walkingIndex = 0;
-				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  mainSprite.getTag());
+				standingStill(ctrl);
 			}
 		}
 		
 		if (facingLeft) {
-			if (pressed) {
-				// sets the new sprites coords pixelStep left
-				mainSprite.setCoords(mainSprite.getCoords().getX() - pixelStep, mainSprite.getCoords().getY());
-				// Sets New Bounding Box for mainSprite
-				mainSpriteBox.setWalls(mainSpriteBox.getX1() - pixelStep, mainSpriteBox.getX2() - pixelStep, mainSpriteBox.getY1(), mainSpriteBox.getY2());
-				
-				// If the new movement of the sprite has a collision it puts the coordinates back
-				if (SpriteCollision()) {
-					mainSpriteBox.setWalls(mainSpriteBox.getX1() + pixelStep, mainSpriteBox.getX2() + pixelStep, mainSpriteBox.getY1(), mainSpriteBox.getY2());
-					mainSprite.setCoords(mainSprite.getCoords().getX() + pixelStep, mainSprite.getCoords().getY());
-				}
-				
-				// Prints sprite walking with the current animation frame
-				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  LeftAnimations.get(walkingIndex));
-				
-				// Moves the walking frame animation up 1 unless its at 3, the max
-				if (walkingIndex == 3) {
-					walkingIndex = 0;
-				}else {
-					walkingIndex += 1;
-				}	
+			if (interact && BoundingBox.isCollision(mainSpriteBox, rightBedInteract)) {
+				BedInteract(ctrl);
+			}
+			else if (pressed) {
+				moveLeft(ctrl);
 			}
 			// if the button is not pressed it prints the character standing facing the appropriate direction
 			else {
-				walkingIndex = 0;
-				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  mainSprite.getTag());
+				standingStill(ctrl);
 			}
 		}
 		
 		if (facingRight) {
-			if (pressed && !SpriteCollision()) {
-				// sets the new sprites coords pixelStep right
-				mainSprite.setCoords(mainSprite.getCoords().getX() + pixelStep, mainSprite.getCoords().getY());
-				// Sets New Bounding Box for mainSprite
-				mainSpriteBox.setWalls(mainSpriteBox.getX1() + pixelStep, mainSpriteBox.getX2() + pixelStep, mainSpriteBox.getY1(), mainSpriteBox.getY2());
-				
-				// If the new movement of the sprite has a collision it puts the coordinates back
-				if (SpriteCollision()) {
-					mainSpriteBox.setWalls(mainSpriteBox.getX1() - pixelStep, mainSpriteBox.getX2() - pixelStep, mainSpriteBox.getY1(), mainSpriteBox.getY2());
-					mainSprite.setCoords(mainSprite.getCoords().getX() - pixelStep, mainSprite.getCoords().getY());
-				}
-				
-				// Prints sprite walking with the current animation frame
-				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  RightAnimations.get(walkingIndex));
-				
-				// Moves the walking frame animation up 1 unless its at 3, the max
-				if (walkingIndex == 3) {
-					walkingIndex = 0;
-				}else {
-					walkingIndex += 1;
-				}	
+			if (interact && BoundingBox.isCollision(mainSpriteBox, leftBedInteract)) {
+				BedInteract(ctrl);
+			}
+			else if (pressed) {
+				moveRight(ctrl);
 			}
 			// if the button is not pressed it prints the character standing facing the appropriate direction
 			else {
-				walkingIndex = 0;
-				ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  mainSprite.getTag());
+				standingStill(ctrl);
 			}
-		}
-//		
-		String coords =  "X1: " + Integer.toString(mainSpriteBox.getX1()) + ", X2: " + Integer.toString(mainSpriteBox.getX2()) + ", Y1: " +  Integer.toString(mainSpriteBox.getY1()) + ", Y2: " + Integer.toString(mainSpriteBox.getY2());
-		
-		// Draws the sprite onto the screen
-		ctrl.drawString(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(), coords, c);
-		ctrl.drawString(100, 250, trigger, c);
-//		ctrl.drawString(100, 250, currentLine, c);
+		}	
 	}
 	
 	// Additional Static methods below...(if needed)
@@ -262,5 +188,133 @@ public class Main{
 		}
 		return false;
 	}
-
+	
+	// Opens popup when interacting with bed
+	public static void BedInteract(Control ctrl) {
+		ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  mainSprite.getTag());
+		ctrl.addSpriteToFrontBuffer(0, 0, "Popup");
+		ctrl.drawString(445, 280, "This bed seems really large compared to me.", c);
+		ctrl.drawString(515, 300, "Maybe I should get a new bed.", c);
+		ctrl.drawString(470, 385, "Press spacebar or start moving to close.", c);
+		
+	}
+	
+	
+	// Opens popup when interacting with desk
+	public static void DeskInteract(Control ctrl) {
+		ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  mainSprite.getTag());
+		ctrl.addSpriteToFrontBuffer(0, 0, "Popup");
+		ctrl.drawString(440, 260, "I love playing Valorant on my fancy computer.", c);
+		ctrl.drawString(515, 280, "I wish I could get out of gold.", c);
+		ctrl.drawString(530, 300, "I just need more practice.", c);
+		ctrl.drawString(470, 385, "Press spacebar or start moving to close.", c);
+	}
+	
+	// Shows character standing still and resets animation
+	public static void standingStill(Control ctrl) {
+		walkingIndex = 0;
+		ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  mainSprite.getTag());
+		interact = false;
+	}
+	
+	// Code to move the character to the foward when button pressed
+	public static void moveForward(Control ctrl) {
+		// Sets New Bounding Box for mainSprite
+		mainSpriteBox.setWalls(mainSpriteBox.getX1(), mainSpriteBox.getX2(), mainSpriteBox.getY1() + pixelStep, mainSpriteBox.getY2() + pixelStep);
+		// sets the new sprites coords pixelStep forward
+		mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() + pixelStep);
+		
+		// If the new movement of the sprite has a collision it puts the coordinates back
+		if (SpriteCollision()) {
+			mainSpriteBox.setWalls(mainSpriteBox.getX1(), mainSpriteBox.getX2(), mainSpriteBox.getY1() - pixelStep, mainSpriteBox.getY2() - pixelStep);
+			mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() - pixelStep);
+		}
+		
+		// Prints sprite walking with the current animation frame
+		ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  ForwardAnimations.get(walkingIndex));
+		
+		// Moves the walking frame animation up 1 unless its at 3, the max
+		if (walkingIndex == 3) {
+			walkingIndex = 0;
+		}else {
+			walkingIndex += 1;
+		}	
+		interact = false;
+	}
+	
+	// Code to move the character to the away when button pressed
+	public static void moveAway(Control ctrl) {
+		// sets the new sprites coords pixelStep backward
+		mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() - pixelStep);
+		// Sets New Bounding Box for mainSprite
+		mainSpriteBox.setWalls(mainSpriteBox.getX1(), mainSpriteBox.getX2(), mainSpriteBox.getY1() - pixelStep, mainSpriteBox.getY2() - pixelStep);
+		
+		// If the new movement of the sprite has a collision it puts the coordinates back
+		if (SpriteCollision()) {
+			mainSpriteBox.setWalls(mainSpriteBox.getX1(), mainSpriteBox.getX2(), mainSpriteBox.getY1() + pixelStep, mainSpriteBox.getY2() + pixelStep);
+			mainSprite.setCoords(mainSprite.getCoords().getX(), mainSprite.getCoords().getY() + pixelStep);
+		}
+		
+		// Prints sprite walking with the current animation frame
+		ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  AwayAnimations.get(walkingIndex));
+		
+		// Moves the walking frame animation up 1 unless its at 3, the max
+		if (walkingIndex == 3) {
+			walkingIndex = 0;
+		}else {
+			walkingIndex += 1;
+		}
+		interact = false;
+	}
+	
+	// Code to move the character to the left when button pressed
+	public static void moveLeft(Control ctrl) {
+		// sets the new sprites coords pixelStep left
+		mainSprite.setCoords(mainSprite.getCoords().getX() - pixelStep, mainSprite.getCoords().getY());
+		// Sets New Bounding Box for mainSprite
+		mainSpriteBox.setWalls(mainSpriteBox.getX1() - pixelStep, mainSpriteBox.getX2() - pixelStep, mainSpriteBox.getY1(), mainSpriteBox.getY2());
+		
+		// If the new movement of the sprite has a collision it puts the coordinates back
+		if (SpriteCollision()) {
+			mainSpriteBox.setWalls(mainSpriteBox.getX1() + pixelStep, mainSpriteBox.getX2() + pixelStep, mainSpriteBox.getY1(), mainSpriteBox.getY2());
+			mainSprite.setCoords(mainSprite.getCoords().getX() + pixelStep, mainSprite.getCoords().getY());
+		}
+		
+		// Prints sprite walking with the current animation frame
+		ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  LeftAnimations.get(walkingIndex));
+		
+		// Moves the walking frame animation up 1 unless its at 3, the max
+		if (walkingIndex == 3) {
+			walkingIndex = 0;
+		}else {
+			walkingIndex += 1;
+		}	
+		interact = false;
+	}
+	
+	
+	// Code to move the character to the right when button pressed
+	public static void moveRight(Control ctrl) {
+		// sets the new sprites coords pixelStep right
+		mainSprite.setCoords(mainSprite.getCoords().getX() + pixelStep, mainSprite.getCoords().getY());
+		// Sets New Bounding Box for mainSprite
+		mainSpriteBox.setWalls(mainSpriteBox.getX1() + pixelStep, mainSpriteBox.getX2() + pixelStep, mainSpriteBox.getY1(), mainSpriteBox.getY2());
+		
+		// If the new movement of the sprite has a collision it puts the coordinates back
+		if (SpriteCollision()) {
+			mainSpriteBox.setWalls(mainSpriteBox.getX1() - pixelStep, mainSpriteBox.getX2() - pixelStep, mainSpriteBox.getY1(), mainSpriteBox.getY2());
+			mainSprite.setCoords(mainSprite.getCoords().getX() - pixelStep, mainSprite.getCoords().getY());
+		}
+		
+		// Prints sprite walking with the current animation frame
+		ctrl.addSpriteToFrontBuffer(mainSprite.getCoords().getX(), mainSprite.getCoords().getY(),  RightAnimations.get(walkingIndex));
+		
+		// Moves the walking frame animation up 1 unless its at 3, the max
+		if (walkingIndex == 3) {
+			walkingIndex = 0;
+		}else {
+			walkingIndex += 1;
+		}
+		interact = false;	
+	}
 }

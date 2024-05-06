@@ -20,3 +20,4 @@ Art/WalkingAway0.png*WalkingAway0
 Art/WalkingAway1.png*WalkingAway1
 Art/WalkingAway2.png*WalkingAway2
 Art/WalkingAway3.png*WalkingAway3
+Art/Popup.png*Popup
