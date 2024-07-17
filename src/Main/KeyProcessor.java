@@ -12,7 +12,7 @@ public class KeyProcessor{
 	
 	// Static Method(s)
 	public static void processKey(char key){
-		if(key == ' ')				return;
+		// if(key == ' ')				return;
 		// Debounce routine below...
 		if(key == last)
 			if(sw.isTimeUp() == false)			return;
@@ -21,6 +21,59 @@ public class KeyProcessor{
 		
 		/* TODO: You can modify values below here! */
 		switch(key){
+		
+		case ' ':
+			Main.trigger = "";
+			Main.pressed = false;
+			break;
+		
+		case 'w':
+			Main.trigger = "w is triggered";
+			Main.pressed = true;
+			Main.facingForward = false;
+			Main.facingAway = true;
+			Main.mainSprite.setTag("FacingAway");
+			Main.facingLeft = false;
+			Main.facingRight = false;
+			
+			
+			break;
+			
+		case 'a':
+			Main.trigger = "a is triggered";
+			Main.pressed = true;
+			Main.facingForward = false;
+			Main.facingAway = false;
+			Main.facingLeft = true;
+			Main.mainSprite.setTag("FacingLeft");
+			Main.facingRight = false;
+			break;
+			
+		case 's':
+			Main.trigger = "s is triggered";
+			Main.pressed = true;
+			Main.facingForward = true;
+			Main.mainSprite.setTag("FacingForward");
+			Main.facingAway = false;
+			Main.facingLeft = false;
+			Main.facingRight = false;
+			break;
+			
+		case 'd':
+			Main.trigger = "d is triggered";
+			Main.pressed = true;
+			Main.facingForward = false;
+			Main.facingAway = false;
+			Main.facingLeft = false;
+			Main.facingRight = true;
+			Main.mainSprite.setTag("FacingRight");
+			break;
+			
+		case '$':
+			Main.trigger = "spacebar is triggered";
+			Main.interact = !Main.interact;
+			break;
+			
 		case '%':								// ESC key
 			System.exit(0);
 			break;
